@@ -1,0 +1,28 @@
+SELECT Juveniles_arrested_Economic_setup.area_name,
+sum(Juveniles_arrested_Education.education_illiterate) as Illiterate,
+
+sum(Juveniles_arrested_Education.education_upto_primary) as "Upto 7 Class",
+sum(Juveniles_arrested_Education.education_above_primary_but_below_matric_or_higher_secondary)
+as "Below 10 Class",
+sum(Juveniles_arrested_Economic_setup.economic_set_up_annual_income_upto_rs_25000)
+as "Income Upto 25000",
+sum(Juveniles_arrested_Economic_setup.economic_set_up_annual_income_250001_to_50000)
+as "Income 25000-50000",
+sum(Juveniles_arrested_Economic_setup.economic_set_up_middle_income_from_50001_to_100000)
+as "Income 50000-100000",
+sum(Juveniles_arrested_Economic_setup.economic_set_up_middle_income_from_100001_to_200000)
+as "Income 100000-200000",
+sum(Juveniles_arrested_Economic_setup.economic_set_up_upper_middle_income_from_200001_to_300000)
+as "Income 200000-300000",
+sum(Juveniles_arrested_Economic_setup.economic_set_up_upper_income_above_rs_300000)
+as "Income Upto 300000",
+sum(Juveniles_arrested_Family_background.family_back_ground_homeless) as Homeless,
+sum(Juveniles_arrested_Family_background.family_back_ground_living_with_guardian) as "Living With Gauardian",
+sum(Juveniles_arrested_Family_background.family_back_ground_living_with_parents) as "Living With Parent" 
+ FROm 
+Juveniles_arrested_Economic_setup join Juveniles_arrested_Education
+on Juveniles_arrested_Economic_setup.Area_Name=Juveniles_arrested_Education.Area_Name join 
+Juveniles_arrested_Family_background
+on Juveniles_arrested_Economic_setup.area_name=Juveniles_arrested_Family_background.area_name group by 
+Juveniles_arrested_Economic_setup.area_name 
+;

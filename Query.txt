@@ -1,0 +1,212 @@
+Answer 1 
+
+Select kidnap.area_name, kidnap.sub_group_name,
+Max (Kidnap.Cases) as "Maximum Cases" From 
+
+(SELECT DISTINCT area_name,sub_group_name,k_a_cases_reported as Cases
+ 
+FROM Kidnapping_ass
+Where sub_group_name not like '14. Total%'
+GROUP BY area_name,sub_group_name order by cases desc) Kidnap
+
+Group by area_name
+Order by "Maximum Cases" Desc
+
+Answer 2 
+
+SELECT area_name,
+sum(no_of_cases_in_which_offenders_were_known_to_the_victims) as "Known to victim",
+sum(no_of_cases_in_which_offenders_were_neighbours) as Neighbour,
+sum(no_of_cases_in_which_offenders_were_other_known_persons)as "Familiar pupils" ,
+sum(no_of_cases_in_which_offenders_were_parentsclose_family_members)as "Parents close ones" ,
+sum(no_of_cases_in_which_offenders_were_relatives)as "Relatives"
+from OffenderRelation
+GROUP by area_name
+ 
+
+Answer 3 
+
+SELECT Juveniles_arrested_Economic_setup.area_name,
+
+sum(Juveniles_arrested_Education.education_illiterate) as Illiterate,
+
+
+sum(Juveniles_arrested_Education.education_upto_primary) as "Upto 7 Class",
+
+sum(Juveniles_arrested_Education.education_above_primary_but_below_matric_or_higher_secondary)
+as "Below 10 Class",
+
+sum(Juveniles_arrested_Economic_setup.economic_set_up_annual_income_upto_rs_25000)
+as "Income Upto 25000",
+
+sum(Juveniles_arrested_Economic_setup.economic_set_up_annual_income_250001_to_50000)
+as "Income 25000-50000",
+
+sum(Juveniles_arrested_Economic_setup.economic_set_up_middle_income_from_50001_to_100000)
+as "Income 50000-100000",
+
+sum(Juveniles_arrested_Economic_setup.economic_set_up_middle_income_from_100001_to_200000)
+as "Income 100000-200000",
+
+sum(Juveniles_arrested_Economic_setup.economic_set_up_upper_middle_income_from_200001_to_300000)
+as "Income 200000-300000",
+
+sum(Juveniles_arrested_Economic_setup.economic_set_up_upper_income_above_rs_300000)
+as "Income Upto 300000",
+
+sum(Juveniles_arrested_Family_background.family_back_ground_homeless) as Homeless,
+
+sum(Juveniles_arrested_Family_background.family_back_ground_living_with_guardian) as "Living With Gauardian",
+
+sum(Juveniles_arrested_Family_background.family_back_ground_living_with_parents) as "Living With Parent" 
+ 
+FROm 
+Juveniles_arrested_Economic_setup 
+join Juveniles_arrested_Education
+
+on Juveniles_arrested_Economic_setup.Area_Name=Juveniles_arrested_Education.Area_Name 
+join 
+Juveniles_arrested_Family_background
+
+on Juveniles_arrested_Economic_setup.area_name=Juveniles_arrested_Family_background.area_name 
+group by 
+Juveniles_arrested_Economic_setup.area_name 
+;
+
+
+ 
+Answer 4 
+
+
+Select Children_2001_2012.area_name, 
+Children_2001_2012.Murder + children_2013.Othermurder as "Children_Murder_2001_2013",
+
+Children_2001_2012.Rape+children_2013.rape as "Children_Rape_2001_2013",
+
+Children_2001_2012.KidnappingandAbduction+children_2013.KidnappingandAbduction as "Children_Kidnapping_2001_2013",
+
+Women_2001_2012.Rape+women_2013.Rape as "Women_Rape_2010_2013",
+
+Women_2001_2012.KidnappingandAbduction+women_2013.KidnappingandAbduction as "Women_Kidnapping_2001_2013",
+
+Women_2001_2012.DowryDeaths+women_2013.DowryDeaths as "Women_DowryDeaths_2001_2013",
+
+Children_2001_2012.Murder+children_2013.Othermurder+
+Children_2001_2012.Rape+
+children_2013.rape+
+Children_2001_2012.KidnappingandAbduction+
+children_2013.KidnappingandAbduction+
+Women_2001_2012.Rape+
+women_2013.Rape+
+Women_2001_2012.KidnappingandAbduction+
+women_2013.KidnappingandAbduction+
+Women_2001_2012.DowryDeaths+women_2013.DowryDeaths As "Total_Crime"
+
+From Children_2001_2012 join children_2013
+ON Children_2001_2012.district = children_2013.DISTRICT 
+
+join Women_2001_2012
+
+on Children_2001_2012.DISTRICT = Women_2001_2012.DISTRICT
+
+join women_2013
+on Children_2001_2012.DISTRICT = women_2013.DISTRICT
+
+Group by Children_2001_2012.area_name 
+Order By "Total_Crime" DESC
+
+
+
+
+Answer 5
+
+SELECT DISTINCT (group_name), 
+sum (victims_upto_10_yrs) as AgeUpto10,
+
+sum (victims_upto_10_15_yrs) as AgeUpto10_15, 
+
+sum (victims_upto_15_18_yrs) as AgeUpto15_18, 
+
+sum (victims_upto_18_30_yrs) as AgeUpto18_30, 
+
+sum (victims_upto_30_50_yrs) as AgeUpto30_50, 
+
+sum (victims_above_50_yrs) as AgeAbove50 
+FROM Murderagewise
+where group_name not NULL
+
+Group by group_name
+
+
+
+Answer 6
+
+select CPoccurrence_2001_2012.area_name,
+sum(CPoccurrence_2014.ATM_Dacoity_Cases_reported) As "ATM Dacoity",
+sum(CPoccurrence_2001_2012.BANKS_Dacoity+CPoccurrence_2013.banks__dacoity+
+CPoccurrence_2014.Bank_Dacoity_Cases_reported) as "Bank Dacioty",
+sum(CPoccurrence_2001_2012.HIGHWAYS_Dacoity+CPoccurrence_2013.HIGHWAYS__Dacoity+
+CPoccurrence_2014.Highways_Dacoity_Cases_reported) As "Highway Dacoity",
+sum(CPoccurrence_2001_2012.RAILWAYS_Dacoity+CPoccurrence_2013.RAILWAYS__Dacoity+
+CPoccurrence_2014.Railways_Dacoity_Cases_reported) As "Railways Dacoity",
+sum(CPoccurrence_2001_2012.RESIDENTIAL_PREMISES_Dacoity+CPoccurrence_2013.RESIDENTIAL_PREMISES__Dacoity+
+CPoccurrence_2014.Residence_Dacoity_Cases_reported) As "Residence Dacoity",
+sum(CPoccurrence_2014.Religious_Places_Dacoity_Cases_reported) As "Religious Place Dacoity",
+sum(CPoccurrence_2001_2012.RIVER_and_SEA_Dacoity+CPoccurrence_2013.RIVER_and_SEA__Dacoity+
+CPoccurrence_2014.RiverOrSea_Dacoity_Cases_reported) As "River And Sea Dacoity",
+sum(CPoccurrence_2001_2012.COMMERCIAL_ESTABLISHMENTS_Dacoity+CPoccurrence_2013.COMMERCIAL_ESTABLISHMENTS__Dacoity+
+CPoccurrence_2014.CommEst_Dacoity_Cases_reported) As "Commercial Establishment Dacoity",
+sum(CPoccurrence_2001_2012.OTHER_PLACES_Dacoity+CPoccurrence_2013.OTHER_PLACES__Dacoity+
+CPoccurrence_2014.OtherPlaces_Dacoity_Cases_reported) As "Other Places Dacoity"
+
+from CPoccurrence_2001_2012
+JOIN CPoccurrence_2014
+ON LOWER(CPoccurrence_2001_2012.Area_Name) = lower(CPoccurrence_2014.Area_Name)
+Join CPoccurrence_2013
+On LOWER(CPoccurrence_2001_2012.area_name) = LOWER(CPoccurrence_2014.area_name)
+group by CPoccurrence_2001_2012.area_name;
+
+Answer 7 
+
+Select Anti_Corruprion_Cases.area_name ,Anti_Corruprion_Cases.year ,
+
+sum(ac02_no_of_cases_registered_during_the_year) As "Total Anti Corruption Cases",
+
+sum(aca02_no_of_persons_arrested_during_the_year) As "Total Anti Corruption Arrest"
+
+from Anti_Corruprion_Cases 
+join Anti_corruption_arrests 
+on Anti_Corruprion_Cases.area_name=Anti_corruption_arrests.area_name 
+group by 
+Anti_Corruprion_Cases.area_name ,Anti_Corruprion_Cases.year
+
+Answer 8
+
+SELECT areaname, Sum (CPACasesRegistered) As "Cases Registered" 
+FROM PoliceComplaints 
+Group by areaname
+Order By "Cases Registered" DESC
+
+
+Answer 9 
+
+Select 
+  crime_2012.STATE_UT,STATE.Population,
+sum(crime_2012.TOTALIPCCRIMES + crime_2013.TOTALIPCCRIMES + 
+crime_2014.TotalCognizableIPCcrimes )As Total_Crimes 
+
+
+ from crime_2012 join crime_2013
+on crime_2012.STATE_UT = crime_2013.STATE_UT 
+join crime_2014
+on crime_2012.STATE_UT=crime_2014.STATE_UT JOIN STATE
+on crime_2012.STATE_UT=STATE.Area_Name
+group by crime_2012.STATE_UT order by total_crimes ASC 
+
+Answer 10 
+
+SELECT area_name,
+sum(rape_cases_reported) as "Incest Rape Cases" 
+FROM Victim where subgroup="Victims of Incest Rape"  
+group by area_name
+Order By "Incest Rape Cases" DESC
